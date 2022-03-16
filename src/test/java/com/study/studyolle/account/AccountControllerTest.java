@@ -11,8 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -27,7 +26,9 @@ class AccountControllerTest {
          mockMvc.perform(get("/sign-up")) // sign-up Url을 Get으로 호출했을때
                  .andDo(print())
                  .andExpect(status().isOk()) // HttpStatus가 Ok이고
-                 .andExpect(view().name("account/sign-up")); // 뷰가 account/sign-up인지
+                 .andExpect(view().name("account/sign-up")) // 뷰가 account/sign-up인지
+                 .andExpect(model().attributeExists("signUpForm")); // 모델객채에 signUpForm 객체가 들어있는지
+            
     }
 
 }

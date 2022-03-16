@@ -1,8 +1,10 @@
 package com.study.studyolle.config;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -21,5 +23,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .anyRequest() // 위에 항목을 제외한 나머지 Request는 전부 권한체크
                 .authenticated();
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+                .mvcMatchers("/node_modules/**") // static node_modules/** 들은 시큐리티 미적용
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()); // static resource 들은 시큐리티 미적용
     }
 }
