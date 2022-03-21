@@ -1,6 +1,9 @@
 package com.study.studyolle.account;
 
+import com.study.studyolle.domain.Account;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -16,6 +19,8 @@ import javax.validation.Valid;
 public class AccountController {
 
     private final SignUpFormValidator signUpFormValidator;
+    private final AccountRepository accountRepository;
+    private final JavaMailSender javaMailSender;
 
     @InitBinder("signUpForm")
     public void initBinder(WebDataBinder webDataBinder) {
@@ -34,6 +39,25 @@ public class AccountController {
         if (errors.hasErrors()) {
             return "account/sign-up";
         }
+
+        Account account = Account.builder()
+                .email(signUpForm.getEmail())
+                .nickname(signUpForm.getNickname())
+                .password(signUpForm.getPassword())
+                .studyCreatedByWeb(true)
+                .studyEnrollmentResultByWeb(true)
+                .studyUpdatedByWeb(true)
+                .build();
+
+        Account saveAccount = accountRepository.save(account);
+
+        saveAccount.generateEmailCheckToken(); // 인증토큰 생성
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(saveAccount.getEmail());
+        mailMessage.setSubject("스터디올래, 회원 가입 인증");
+        mailMessage.setText("/check-email-token?token=" + saveAccount.getEmailCheckToken() + "&email=" + saveAccount.getEmail());
+        javaMailSender.send(mailMessage);
 
         return "redirect:/";
     }
