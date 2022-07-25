@@ -40,7 +40,7 @@ public class Account {
 
     private String location;
 
-    @Lob @Basic(fetch = FetchType.EAGER)
+    @Lob @Basic(fetch = FetchType.EAGER) // Lob 데이터에 기본 전략이 LAZY 이므로 @Basic 어노테이션으로 EAGER 세팅
     private String profileImage;
 
     private boolean studyCreatedByEmail;

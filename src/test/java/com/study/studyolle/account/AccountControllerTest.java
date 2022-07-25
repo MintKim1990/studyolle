@@ -41,7 +41,6 @@ class AccountControllerTest {
                  .andExpect(status().isOk()) // HttpStatus가 Ok이고
                  .andExpect(view().name("account/sign-up")) // 뷰가 account/sign-up인지
                  .andExpect(model().attributeExists("signUpForm")); // 모델객채에 signUpForm 객체가 들어있는지
-            
     }
 
     @DisplayName("회원 가입 처리 - 입력값 오류")
