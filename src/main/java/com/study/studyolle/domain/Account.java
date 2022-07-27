@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@Setter(AccessLevel.PRIVATE)
+@Setter
 @EqualsAndHashCode(of = "id")
 @Builder
 @AllArgsConstructor

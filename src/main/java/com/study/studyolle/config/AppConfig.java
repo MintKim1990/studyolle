@@ -10,6 +10,6 @@ public class AppConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder(); // BCrypt 해싱 알고리즘
     }
 }
