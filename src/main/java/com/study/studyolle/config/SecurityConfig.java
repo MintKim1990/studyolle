@@ -15,7 +15,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .mvcMatchers("/", "/login", "/sign-up", "/check-email",
+                .mvcMatchers("/", "/login", "/sign-up",
                         "/check-email-token", "/email-login",
                         "/check-email-login", "/login-link") // 해당 링크는 권한체크 패스
                 .permitAll()
@@ -23,6 +23,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .anyRequest() // 위에 항목을 제외한 나머지 Request는 전부 권한체크
                 .authenticated();
+
+        http.formLogin()
+                .loginPage("/login")
+                .permitAll();
+
+        http.logout()
+                .logoutSuccessUrl("/");
     }
 
     @Override
